@@ -1,0 +1,14 @@
+# SonarQube
+.scannerwork/
+
+# Java (if applicable)
+*.class
+*.jar
+target/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
