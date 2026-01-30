@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    triggers {
+        githubPush()
+    }
+
     tools {
         maven 'Maven3'
         jdk 'JDK17'
@@ -8,13 +12,14 @@ pipeline {
 
     environment {
         SONARQUBE_ENV = 'SonarQubeServer'
-        NEXUS_URL = '34.228.143.158:8081'
+        NEXUS_URL = 'http://34.228.143.158:8081'
         NEXUS_REPO = 'maven-releases'
         NEXUS_CREDENTIALS = 'nexus-creds'
         TOMCAT_SERVER = 'tomcat-ssh'
-        ARTIFACT_VERSION = '1.0.0'
+
         ARTIFACT_ID = 'NumberGuessGame'
-        WAR_FILE = "target/${ARTIFACT_ID}-1.0-SNAPSHOT.war"
+        ARTIFACT_VERSION = '1.0-SNAPSHOT'
+        WAR_FILE = "target/${ARTIFACT_ID}-${ARTIFACT_VERSION}.war"
     }
 
     stages {
@@ -100,3 +105,4 @@ pipeline {
         }
     }
 }
+
