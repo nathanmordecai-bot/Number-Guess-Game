@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         SONARQUBE_ENV = 'SonarQubeServer'   // Name configured in Jenkins
-        NEXUS_URL = 'http://<nexus-ip>:8081/repository/maven-releases/'
+        NEXUS_URL = 'http://34.228.143.158:8081/repository/maven-releases/'
         NEXUS_CREDENTIALS = 'nexus-creds'
         TOMCAT_SERVER = 'tomcat-ssh'
     }
@@ -48,7 +48,7 @@ pipeline {
                 nexusArtifactUploader(
                     nexusVersion: 'nexus3',
                     protocol: 'http',
-                    nexusUrl: '<nexus-ip>:8081',
+                    nexusUrl: '34.228.143.158:8081',
                     groupId: 'com.studentapp',
                     version: '1.0.0',
                     repository: 'maven-releases',
