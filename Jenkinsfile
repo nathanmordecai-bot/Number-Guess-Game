@@ -34,7 +34,11 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    sh 'mvn clean verify sonar:sonar'
+                    sh 'mvn clean verify sonar:sonar \
+                          -Dsonar.projectKey=com.studentapp:NumberGuessGame \
+                          -Dsonar.projectName=NumberGuessGame \
+                          -Dsonar.host.url=http://54.226.164.217:9000
+                          -Dsonar.projectKey=com.studentapp:NumberGuessGame'
                 }
             }
         }
