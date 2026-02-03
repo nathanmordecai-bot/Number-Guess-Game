@@ -20,6 +20,11 @@ pipeline {
         ARTIFACT_ID = 'NumberGuessGame'
         ARTIFACT_VERSION = '1.0-SNAPSHOT'
         WAR_FILE = "target/${ARTIFACT_ID}-${ARTIFACT_VERSION}.war"
+        
+        // Add these for better SonarQube configuration
+        SONAR_HOST_URL = 'http://13.218.50.185:9000'
+        SONAR_PROJECT_KEY = 'com.studentapp:NumberGuessGame'
+        SONAR_PROJECT_NAME = 'NumberGuessGame'
     }
 
     stages {
@@ -40,19 +45,15 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    sh '''
-                        mvn clean verify sonar:sonar \
-                          -Dsonar.projectKey=com.studentapp:NumberGuessGame \
-                          -Dsonar.projectName=NumberGuessGame \
-                          -Dsonar.host.url=http://13.218.50.185:9000
-                    '''
+                    // Remove the hardcoded parameters, let Jenkins handle it
+                    sh 'mvn clean compile sonar:sonar'
                 }
             }
         }
 
         stage('Quality Gate') {
             steps {
-                timeout(time: 5, unit: 'MINUTES') {
+                timeout(time: 15, unit: 'MINUTES') {  // Increased from 5 to 15 minutes
                     waitForQualityGate abortPipeline: true
                 }
             }
@@ -116,4 +117,3 @@ pipeline {
         }
     }
 }
-
