@@ -24,14 +24,21 @@ pipeline {
                 sh 'mvn test'
             }
         }
+
+        stage('Package') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
     }
 
     post {
         success {
-            echo 'Build and tests passed successfully.'
+            echo 'Build, test, and packaging completed successfully.'
         }
         failure {
-            echo 'Build or tests failed. Check the logs.'
+            echo 'Pipeline failed. Check logs.'
         }
     }
 }
+
