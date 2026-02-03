@@ -4,7 +4,6 @@ pipeline {
     tools {
         maven 'Maven3'
         jdk 'JDK21'
-        // SonarQube scanner is configured under "Global Tool Configuration"
     }
 
     stages {
@@ -33,17 +32,16 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            environment {
-                scannerHome = tool 'sonar-scanner'
-            }
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh """
-                        ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=myproject \
-                        -Dsonar.sources=src \
-                        -Dsonar.java.binaries=target
-                    """
+                    withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                        sh """
+                            mvn clean verify sonar:sonar \
+                              -Dsonar.projectKey=NumberGuessGame \
+                              -Dsonar.host.url=$SONAR_HOST_URL \
+                              -Dsonar.login=$SONAR_TOKEN
+                        """
+                    }
                 }
             }
         }
