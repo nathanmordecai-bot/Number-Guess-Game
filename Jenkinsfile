@@ -44,7 +44,7 @@ pipeline {
                         mvn clean verify sonar:sonar \
                           -Dsonar.projectKey=com.studentapp:NumberGuessGame \
                           -Dsonar.projectName=NumberGuessGame \
-                          -Dsonar.host.url=http://54.226.164.217:9000
+                          -Dsonar.host.url=http://13.218.50.185:9000
                     '''
                 }
             }
