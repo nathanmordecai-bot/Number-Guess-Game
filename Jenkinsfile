@@ -7,6 +7,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -39,35 +40,54 @@ pipeline {
             }
         }
 
+        stage('Upload Artifact to Nexus') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'nexus-creds',
+                    usernameVariable: 'NEXUS_USER',
+                    passwordVariable: 'NEXUS_PASS'
+                )]) {
+
+                    // Inject the Jenkins-managed settings.xml
+                    configFileProvider([configFile(
+                        fileId: 'global-maven-settings',
+                        variable: 'MAVEN_SETTINGS'
+                    )]) {
+
+                        sh """
+                            mvn deploy \
+                              --settings $MAVEN_SETTINGS \
+                              -DskipTests
+                        """
+                    }
+                }
+            }
+        }
+
         stage('Deploy to Tomcat') {
             steps {
                 sshagent(['tomcat-deploy-key']) {
                     sh """
                         echo "Deploying application to Tomcat..."
-                        
-                        # Accept host key (safely)
+
                         mkdir -p ~/.ssh
                         ssh-keyscan -H 44.192.25.13 >> ~/.ssh/known_hosts 2>/dev/null
-                        
-                        # Deploy WAR file
+
                         scp target/NumberGuessGame-1.0-SNAPSHOT.war ec2-user@44.192.25.13:/tmp/
-                        
-                        # Restart Tomcat
+
                         ssh ec2-user@44.192.25.13 '
                             echo "Copying WAR file to Tomcat webapps..."
                             sudo cp /tmp/NumberGuessGame-1.0-SNAPSHOT.war /opt/tomcat/webapps/
-                            
+
                             echo "Restarting Tomcat service..."
                             sudo systemctl restart tomcat
-                            
-                            # Wait for deployment
+
                             sleep 5
-                            
-                            # Verify deployment
+
                             if sudo ls /opt/tomcat/webapps/NumberGuessGame-1.0-SNAPSHOT.war > /dev/null 2>&1; then
-                                echo "✅ Deployment successful!"
+                                echo "Deployment successful!"
                             else
-                                echo "❌ Deployment failed - WAR file not found!"
+                                echo "Deployment failed - WAR file not found!"
                                 exit 1
                             fi
                         '
