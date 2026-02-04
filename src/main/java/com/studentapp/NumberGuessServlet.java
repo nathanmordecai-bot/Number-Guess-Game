@@ -15,6 +15,11 @@ public class NumberGuessServlet extends HttpServlet {
         targetNumber = new Random().nextInt(100) + 1;
     }
 
+    // ✔ Option 1 fix — added back for your test
+    public int getTargetNumber() {
+        return targetNumber;
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("/index.jsp").forward(request, response);
@@ -39,7 +44,7 @@ public class NumberGuessServlet extends HttpServlet {
             } else {
                 message = "🎉 Congratulations! You guessed the number!";
                 result = "win";
-                targetNumber = new Random().nextInt(100) + 1;
+                targetNumber = new Random().nextInt(100) + 1; // Reset game
             }
 
         } catch (NumberFormatException e) {
