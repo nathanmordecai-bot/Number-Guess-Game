@@ -4,11 +4,9 @@
     <title>Number Guessing Game</title>
     <link rel="stylesheet" type="text/css" href="../styles.css">
 </head>
-
 <body>
     <h1>Welcome to the Number Guessing Game!</h1>
     <p>Try to guess a number between 1 and 100.</p>
-    
     <form action="guess" method="post">
         <label>Enter your guess:</label>
         <input type="text" name="guess">
