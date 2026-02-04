@@ -59,4 +59,17 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- Added for Nexus deployment -->
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <url>http://52.91.240.144:8081/repository/maven-releases/</url>
+        </repository>
+
+        <snapshotRepository>
+            <id>nexus</id>
+            <url>http://52.91.240.144:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
