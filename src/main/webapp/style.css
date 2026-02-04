@@ -1,3 +1,4 @@
+/* Background gradient + fade-in */
 body {
     margin: 0;
     padding: 0;
@@ -10,6 +11,7 @@ body {
     animation: fadeIn 1.2s ease-in-out;
 }
 
+/* Card container */
 .container {
     background: white;
     padding: 40px;
@@ -20,11 +22,25 @@ body {
     animation: slideUp 0.8s ease-out;
 }
 
+/* Title */
 h1 {
     color: #1e3a8a;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
+/* Message styling */
+.message {
+    font-size: 18px;
+    margin-bottom: 15px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Wrong guess shake */
+.shake {
+    animation: shake 0.4s ease-in-out;
+}
+
+/* Input styling */
 input[type="text"] {
     width: 80%;
     padding: 12px;
@@ -40,6 +56,7 @@ input[type="text"]:focus {
     box-shadow: 0 0 8px rgba(30,64,175,0.3);
 }
 
+/* Button styling */
 button {
     background-color: #3b82f6;
     color: white;
@@ -56,6 +73,7 @@ button:hover {
     transform: scale(1.05);
 }
 
+/* Animations */
 @keyframes fadeIn {
     from { opacity: 0 }
     to { opacity: 1 }
@@ -64,4 +82,22 @@ button:hover {
 @keyframes slideUp {
     from { transform: translateY(40px); opacity: 0 }
     to { transform: translateY(0); opacity: 1 }
+}
+
+@keyframes shake {
+    0% { transform: translateX(0px); }
+    25% { transform: translateX(-8px); }
+    50% { transform: translateX(8px); }
+    75% { transform: translateX(-8px); }
+    100% { transform: translateX(0px); }
+}
+
+/* Confetti container */
+#confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
 }
